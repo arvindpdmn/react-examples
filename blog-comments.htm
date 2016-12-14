@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>React Blog Comments</title>
+
+    <!-- Source: https://facebook.github.io/react/docs/rendering-elements.html#updating-the-rendered-element -->
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/react@15/dist/react.js"></script>
+    <script src="https://unpkg.com/react-dom@15/dist/react-dom.js"></script>
+    <script src="https://fb.me/JSXTransformer-0.13.3.js"></script>
+
+    <style>
+        .Comment {
+            margin-bottom: 40px;
+        }
+    </style>
+
+    <script type="text/jsx">
+function Avatar(props) {
+  return (
+    <img className="Avatar"
+      src={'https://api.adorable.io/avatars/80/' + props.user.username}
+      alt={props.user.username}
+    />
+  );
+}
+
+function UserInfo(props) {
+  return (
+    <div className="UserInfo">
+      <Avatar user={props.user} />
+      <div className="UserInfo-name">
+        {props.user.username}
+      </div>
+    </div>
+  );
+}
+
+// Having Avatar and UserInfo as separate components enables reuse later.
+// And it can allow us to rearrange them into a different layout more easily.
+function Comment(props) {
+  return (
+    <div className="Comment">
+      <UserInfo user={props.author} />
+      <div className="Comment-text">
+        {props.text}
+      </div>
+      <div className="Comment-date">
+        {props.date}
+      </div>
+    </div>
+  );
+}
+
+function Blog() {
+  let dilip = {username: "Dilip"};
+  let sarah = {username: "Sarah"};
+  let fred = {username: "Fred"};
+  return (
+    <div>
+      <Comment author={dilip} text="Hello, this is a comment." date="12 May, 2014"/>
+      <Comment author={sarah} text="Hello, this is a reply." date="14 Aug, 2015"/>
+      <Comment author={fred} text="I don't understand this. Could you explain?" date="25 Oct, 2016"/>
+    </div>
+  );
+}
+
+ReactDOM.render(
+  <Blog />,
+  document.getElementById('root')
+);
+    </script>
+</body>
+
+</html>
