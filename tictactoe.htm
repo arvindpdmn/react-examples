@@ -116,12 +116,12 @@ class Row extends React.Component {
 
 class Board extends React.Component {
   render() {
+    let rows = [];
+    for (let i = 0; i < 9; i+=3) {
+        rows.push(<Row key={i} sqrIndex={i} squares={this.props.squares} solved={this.props.solved} onClick={(i) => this.props.onClick(i)} />);
+    }
     return (
-      <div>
-        <Row key={0} sqrIndex={0} squares={this.props.squares} solved={this.props.solved} onClick={(i) => this.props.onClick(i)} />
-        <Row key={3} sqrIndex={3} squares={this.props.squares} solved={this.props.solved} onClick={(i) => this.props.onClick(i)} />
-        <Row key={6} sqrIndex={6} squares={this.props.squares} solved={this.props.solved} onClick={(i) => this.props.onClick(i)} />
-      </div>
+      <div>{rows}</div>
     );
   }
 }
