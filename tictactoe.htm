@@ -104,7 +104,7 @@ class Row extends React.Component {
     let cells = [];
     for (let i = 0; i < 3; i++) {
         let idx = this.props.sqrIndex + i;
-        cells.push(this.renderSquare(idx));
+        cells.push(this.renderSquare(idx)); // Wrong: this.renderSquare({idx}) is actually a shortcut for {idx: idx}
     }
     return (
       <div className="board-row">
