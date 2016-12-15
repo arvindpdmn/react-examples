@@ -67,6 +67,16 @@
       background: #ddd;
       }
 
+      .layout {
+      display: flex;
+      flex-direction: column;
+      margin: 40px;
+      }
+
+      .userControl {
+        margin-bottom: 10px;
+      }
+
       .game {
       display: flex;
       flex-direction: row;
@@ -77,6 +87,9 @@
       }
     </style>
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.2/css/uikit.min.css" />
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.27.2/js/uikit.min.js"></script>
 </head>
 
 <body>
@@ -129,7 +142,12 @@ class Board extends React.Component {
 class Game extends React.Component {
   constructor() {
     super();
-    this.state = {
+    this.init();
+  }
+  
+  init(reinit=false) { // use default value
+    // This method enables reuse of state init code
+    const state = {
       history: [{
         squares: Array(9).fill(null)
       }],
@@ -137,8 +155,15 @@ class Game extends React.Component {
       stepNumber: 0,
       solved: Array(9).fill(false)
     };
+
+    if (reinit) {
+      this.setState(state)
+    }
+    else {
+      this.state = state;
+    }
   }
-  
+
   handleClick(i) {
     const history = this.state.history;
     const current = history[history.length - 1];
@@ -175,6 +200,22 @@ class Game extends React.Component {
     });
   }
 
+  newGame() {
+    this.init(true);
+  }
+
+  replayMove(move) {
+    // TODO There must be a better way to do this than using multiple timers
+    setTimeout(
+      () => this.jumpTo(move),
+      1000*move
+    );
+  }
+
+  replayMoves() {
+    this.state.history.map((obj, i) => this.replayMove(i));
+  }
+
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
@@ -199,17 +240,23 @@ class Game extends React.Component {
     });
 
     return (
-      <div className="game">
-        <div className="game-board">
-            <Board
-              squares={current.squares}
-              solved={this.state.solved}
-              onClick={(i) => this.handleClick(i)}
-            />
+      <div className="layout">
+        <div className="userControl">
+          <button className="uk-button-primary" type="button" onClick={() => this.newGame()}>New Game</button>
+          <button className="uk-button-primary" type="button" onClick={() => this.replayMoves()}>Replay Moves</button>
         </div>
-        <div className="game-info">
-          <div>{status}</div>
-          <ol>{moves}</ol>
+        <div className="game">
+          <div className="game-board">
+              <Board
+                squares={current.squares}
+                solved={this.state.solved}
+                onClick={(i) => this.handleClick(i)}
+              />
+          </div>
+          <div className="game-info">
+            <div>{status}</div>
+            <ol>{moves}</ol>
+          </div>
         </div>
       </div>
     );
@@ -239,6 +286,10 @@ function calculateWinner(squares) {
     }
   }
   return null;
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
     </script>
 </body>
