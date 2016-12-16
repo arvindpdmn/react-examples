@@ -64,6 +64,9 @@ class ProductTable extends React.Component {
   }
 }
 
+// props are a way of passing data from parent to child.
+// don't use state at all to build this static version.
+// State is reserved only for interactivity, that is, data that changes over time.
 class SearchBar extends React.Component {
   constructor(props) {
     super(props);
@@ -102,6 +105,8 @@ class SearchBar extends React.Component {
   }
 }
 
+// Stored in state at this level because both
+// SearchBar and ProductTable need these inputs
 class FilterableProductTable extends React.Component {
   constructor(props) {
     super(props);
