@@ -43,6 +43,10 @@ function BoilingVerdict(props) {
   return <p>The water would not boil.</p>;
 }
 
+BoilingVerdict.propTypes = {
+  celsius: React.PropTypes.number,
+}
+
 class TemperatureInput extends React.Component {
   constructor(props) {
     super(props);
@@ -64,6 +68,25 @@ class TemperatureInput extends React.Component {
       </fieldset>
     );
   }
+}
+
+TemperatureInput.propTypes = {
+  scale: React.PropTypes.oneOf(['c', 'f']).isRequired,
+  value: (props, propName, componentName) => {
+    if (typeof(props[propName]) !== "string" ||
+        !/^-?\d*(\.\d+)?$/.test(props[propName])) {
+      return new Error(
+        'Invalid prop `' + propName + '` supplied to' +
+        ' `' + componentName + '`. Validation failed.'
+      );
+    }
+  },
+  onChange: React.PropTypes.func.isRequired,
+}
+
+TemperatureInput.defaultProps = {
+  scale: 'c',
+  value: '0',
 }
 
 class Calculator extends React.Component {
@@ -90,8 +113,8 @@ class Calculator extends React.Component {
 
     return (
       <div>
+        {/* scale undefined but defaultProps take care of it. */}
         <TemperatureInput
-          scale="c"
           value={celsius}
           onChange={this.handleCelsiusChange} />
         <TemperatureInput
