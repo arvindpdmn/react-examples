@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>React Controlled Form</title>
+    <title>React Uncontrolled Form</title>
 </head>
 
 <body>
@@ -16,35 +16,17 @@
 class NameForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-        name: '',
-        sex: '', // will remain empty if user doesn't change selection
-                 // defaultValue="Male" on <select> will have no affect
-                 // could use defaultProps on NameForm
-        address: '',
-    };
-
     this.handleNameChange = this.handleNameChange.bind(this);
-    this.handleSexChange = this.handleSexChange.bind(this);
-    this.handleAddressChange = this.handleAddressChange.bind(this);
-    
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleNameChange(event) {
-    this.setState({name: event.target.value.toUpperCase()});
-  }
-
-  handleSexChange(event) {
-    this.setState({sex: event.target.value});
-  }
-
-  handleAddressChange(event) {
-    this.setState({address: event.target.value});
+    // This is DOM manipulation
+    this.name.value = this.name.value.toUpperCase();
   }
 
   handleSubmit(event) {
-    alert(this.state.name + '\n' + this.state.sex + '\n' + this.state.address);
+    alert(this.name.value + '\n' + this.sex.value + '\n' + this.address.value);
     event.preventDefault();
   }
 
@@ -53,13 +35,13 @@ class NameForm extends React.Component {
       <form onSubmit={this.handleSubmit}>
         <label>
           Name:
-          <input type="text" value={this.state.name} onChange={this.handleNameChange} />
+          <input type="text" ref={input => this.name = input} onChange={this.handleNameChange} />
         </label>
         <br/>
 
         <label>
           Sex:
-          <select value={this.state.sex} onChange={this.handleSexChange}>
+          <select ref={input => this.sex = input} >
             <option value="Male">Male</option>
             <option value="Female">Female</option>
           </select>
@@ -68,7 +50,7 @@ class NameForm extends React.Component {
         
         <label>
           Address:
-          <textarea value={this.state.address} onChange={this.handleAddressChange} />
+          <textarea  ref={input => this.address = input} />
         </label>
         <br/>
 
