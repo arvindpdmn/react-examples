@@ -51,14 +51,22 @@ class LoginControl extends React.Component {
 }
 
 // This shows conditionally rendering elements
+// Can conditionally render one element: put multiple ones into a div
+// Example also shows how to transform array to list rendering using map()
 function Mailbox(props) {
-  const unreadMessages = props.unreadMessages;
+  const unreadMessages = props.unreadMessages.map((subj, i) => <li key={i}>{subj}</li>);
   return (
     <div>
-      {unreadMessages.length > 0 &&
-        <h2>
-          You have {unreadMessages.length} unread messages.
-        </h2>
+      {props.unreadMessages.length > 0 &&
+        <div>
+          <h2>
+            You have {props.unreadMessages.length} unread messages.
+          </h2>
+          <ul>{unreadMessages}</ul>
+          {/* We can also inline the map() call:
+          <ul>props.unreadMessages.map((subj, i) => <li key={i}>{subj}</li>)</ul>
+          */}
+        </div>
       }
     </div>
   );
