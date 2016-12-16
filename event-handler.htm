@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>React Event Handler</title>
+
+    <!-- Source: https://facebook.github.io/react/docs/rendering-elements.html#updating-the-rendered-element -->
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/react@15/dist/react.js"></script>
+    <script src="https://unpkg.com/react-dom@15/dist/react-dom.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
+    <script type="text/jsx">
+class Toggle extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {isToggleOn: true};
+
+    // This binding is necessary to make `this` work in the callback
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.setState(prevState => ({
+      isToggleOn: !prevState.isToggleOn
+    }));
+  }
+
+  // onClick={(i) => this.handleClick(i)}
+  // If this callback is passed as a prop to lower components, 
+  // those components might do an extra re-rendering. 
+  // Recommend binding in the constructor to avoid this sort of performance problem.
+  // onClick={this.handleClick}
+  // In constructor: this.handleClick = this.handleClick.bind(this);
+  // binding makes 'this' work in the callback
+  render() {
+    return (
+      <button onClick={this.handleClick}>
+        {this.state.isToggleOn ? 'ON' : 'OFF'}
+      </button>
+    );
+  }
+}
+
+ReactDOM.render(
+  <Toggle />,
+  document.getElementById('root')
+);
+    </script>
+</body>
+
+</html>
