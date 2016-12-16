@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>React Avoid Mutation</title>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/react@15/dist/react.js"></script>
+    <script src="https://unpkg.com/react-dom@15/dist/react-dom.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
+    <script type="text/jsx">
+class ListOfWords extends React.PureComponent {
+  render() {
+    return <div>{this.props.words.join(',')}</div>;
+  }
+}
+
+class WordAdder extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      words: ['marklar']
+    };
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    // This section is bad style and causes a bug
+    // because words is mutated and will compare equal
+    // inside ListOfWords since it's a PureComponent
+    //const words = this.state.words;
+    //words.push('marklar');
+    //this.setState({words: words});
+
+    // Not mutating the words object here
+    this.setState(prevState => ({
+        words: prevState.words.concat(['marklar'])
+    }));
+
+    // ES6 syntax
+    // this.setState(prevState => ({
+    //    words: [...prevState.words, 'marklar'],
+    // }));
+  }
+
+  render() {
+    return (
+      <div>
+        <button onClick={this.handleClick}>Add</button>
+        <ListOfWords words={this.state.words} />
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(
+  <WordAdder />,
+  document.getElementById('root')
+);
+    </script>
+</body>
+
+</html>

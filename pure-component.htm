@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>React Pure Component</title>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/react@15/dist/react.js"></script>
+    <script src="https://unpkg.com/react-dom@15/dist/react-dom.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
+    <script type="text/jsx">
+class CounterButton extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {count: 1};
+  }
+
+  render() {
+      return (
+        <button
+        color={this.props.color}
+        onClick={() => this.setState(prevState => ({count: prevState.count + 1}))}>
+        Count: {this.state.count}
+        </button>
+      );
+  }
+}
+
+ReactDOM.render(
+  <CounterButton color="red" />,
+  document.getElementById('root')
+);
+    </script>
+</body>
+
+</html>
